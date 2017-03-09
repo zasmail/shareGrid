@@ -102,7 +102,7 @@ for i in 0..limit
   products << fake_product
 end
 
-File.open("products_price.json","w") do |f|
+File.open("products.json","w") do |f|
   f.write(products.to_json)
 end
 
