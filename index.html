@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css" />
+    <title>instantsearch.js basics</title>
+  </head>
+  <body>
+    <input type="text" id="search-box" />
+    <div id="hits-container"></div>
+    <div id="pagination-container"></div>
+    <div id="today" style="color:orange;">Today</div>
+
+    <script src="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+      var search = instantsearch({
+        appId: 'C1GEL7N07Y',
+        apiKey: 'b8a942c3ff7717de0d2e97ecc30862e0',
+        indexName: 'products',
+        searchParameters: {
+          facets: ['unavaliable']
+        }
+      });
+
+      search.addWidget(
+        instantsearch.widgets.searchBox({
+          container: '#search-box',
+          placeholder: 'Search for products...'
+        })
+      );
+
+      search.addWidget(
+        instantsearch.widgets.hits({
+          container: '#hits-container',
+          templates: {
+            item: '{{ProductName}}'
+          }
+        })
+      );
+
+      search.addWidget(
+        instantsearch.widgets.pagination({
+          container: '#pagination-container'
+        })
+      );
+
+      var customWidget = {
+
+        init: function(options) {
+          // see "Usage" tab for more details on the API
+          this.helper = options.helper;
+          $('#today').on('click', function(){
+            this.helper.addFacetExclusion('unavaliable', '2017-03-08').search();
+          }.bind(this));
+        },
+
+        // Called every time there is new data
+        render: function(options) {
+          // see "Usage" tab for more details on the API
+        }
+      };
+
+      search.addWidget(customWidget);
+
+
+
+      search.start();
+    </script>
+  </body>
+</html>

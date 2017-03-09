@@ -44,7 +44,7 @@ def random_category
 end
 
 def calendar
-  limit = 1000
+  limit = 365
   cal = []
   for i in 0..limit
     date = Date.today + i
@@ -55,6 +55,19 @@ def calendar
   end
   cal
 end
+# def calendar
+#   limit = 365
+#   cal = []
+#   for i in 0..limit
+#     date = Time.now + (24*60*60*i)
+#     date =  date.to_i
+#     free = rand(10) % 4 == 0
+#     if free
+#       cal << date
+#     end
+#   end
+#   cal
+# end
 
 
 
@@ -95,10 +108,11 @@ end
 
 Algolia.init :application_id => "C1GEL7N07Y", :api_key => "0175dae427cdeeb9e978947f6b5174a9"
 index = Algolia::Index.new("products")
-index.set_settings( { "customRanking"            => ["desc(popularity)", "desc(views)"],
-                      "searchableAttributes"     => ["ProductName", "Category", "Brand", "Mount"],
-                      "attributesToHighlight"    => ["ProductName", "Category", "Brand", "Mount"],
-                      "attributesForFaceting"    => ["Category", "Brand", "Mount", "LensType", "unavaliable"]},
-                    {"forwardToReplicas"        => true})
+index.set_settings( { "customRanking"                   => ["desc(popularity)", "desc(views)"],
+                      "searchableAttributes"            => ["ProductName", "Category", "Brand", "Mount"],
+                      "attributesToHighlight"           => ["ProductName", "Category", "Brand", "Mount"],
+                      "attributesForFaceting"           => ["Category", "Brand", "Mount", "LensType", "unavaliable"],
+                      "allowCompressionOfIntegerArray"  => true},
+                    {"forwardToReplicas"                => true})
 index.clear_index
 index.add_objects(products)
